@@ -34,7 +34,6 @@ class ResourcesCollectionViewCell: UICollectionViewCell, UICollectionViewDelegat
     override func awakeFromNib() {
         super.awakeFromNib()
         configure()
-        //custom logic goes here
     }
     func configure(){
          print("cell")

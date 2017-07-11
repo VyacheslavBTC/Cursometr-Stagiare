@@ -17,8 +17,6 @@ class MainScreenViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewDidLoad()
         horizontalQuotationsCollection.delegate = self
         horizontalQuotationsCollection.dataSource = self
-        //self.horizontalQuotationsCollection. self.
-        horizontalQuotationsCollection.tag = 1
         self.horizontalQuotationsCollection.isPagingEnabled = true
         self.horizontalQuotationsCollection.showsHorizontalScrollIndicator = false
     }

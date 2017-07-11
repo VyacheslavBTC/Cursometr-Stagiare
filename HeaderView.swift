@@ -41,8 +41,8 @@ class HeaderView: UIView {
         self.leaveFeedbackButton.centerYAnchor.constraint(equalTo: self.currentQuotationLabel.centerYAnchor, constant:0 ).isActive = true
         
        // self.currentQuotationUnderLineView.topAnchor.constraint(equalTo: self.currentQuotationLabel.bottomAnchor, constant: 16).isActive = true
-        //self.currentQuotationUnderLineView.leftAnchor.constraint(equalTo: self.headerView.leftAnchor, constant: 16).isActive = true
-        //self.currentQuotationUnderLineView.rightAnchor.constraint(equalTo: self.headerView.rightAnchor, constant: -16).isActive = true
+        self.currentQuotationUnderLineView.leftAnchor.constraint(equalTo: self.headerView.leftAnchor, constant: 16).isActive = true
+        self.currentQuotationUnderLineView.rightAnchor.constraint(equalTo: self.headerView.rightAnchor, constant: -16).isActive = true
         super.updateConstraints()
         }
     

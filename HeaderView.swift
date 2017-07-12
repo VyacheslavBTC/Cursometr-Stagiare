@@ -47,16 +47,16 @@ class HeaderView: UIView {
     override func updateConstraints() {
         
         self.currentQuotationLabel.leftAnchor.constraint(equalTo: self.headerView.leftAnchor, constant: 16).isActive = true
-        self.currentQuotationLabel.topAnchor.constraint(equalTo: self.headerView.topAnchor, constant: 16).isActive = true
+        self.currentQuotationLabel.topAnchor.constraint(equalTo: self.headerView.topAnchor, constant: 20).isActive = true
         
         self.leaveFeedbackButton.rightAnchor.constraint(equalTo: self.headerView.rightAnchor, constant: -16).isActive = true
         self.leaveFeedbackButton.centerYAnchor.constraint(equalTo: self.currentQuotationLabel.centerYAnchor, constant:0 ).isActive = true
         
         self.otherQuotationsLabel.leftAnchor.constraint(equalTo: self.headerView.leftAnchor, constant: 16).isActive = true
-        self.otherQuotationsLabel.bottomAnchor.constraint(equalTo: self.headerView.bottomAnchor, constant: -32).isActive = true
+        self.otherQuotationsLabel.bottomAnchor.constraint(equalTo: self.headerView.bottomAnchor, constant: -24).isActive = true
         
         
-        self.lineUnderCurrentQuotationLayer.frame = CGRect(x: 16, y: self.currentQuotationLabel.bounds.height + 16, width: self.headerView.frame.width - 32, height: 1)
+        self.lineUnderCurrentQuotationLayer.frame = CGRect(x: 16, y: self.currentQuotationLabel.bounds.height + 32, width: self.headerView.frame.width - 32, height: 1)
         
         self.lineUnderOtherQuotationLayer.frame = CGRect(x: 16, y: self.headerView.frame.height - 16, width: self.headerView.frame.width - 32, height: 1)
 

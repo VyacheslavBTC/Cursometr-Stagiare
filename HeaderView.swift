@@ -18,13 +18,13 @@ class HeaderView: UIView {
     
     private lazy var lineUnderCurrentQuotationLayer: CALayer = {
         let layer = CALayer()
-        layer.backgroundColor = UIColor.white.cgColor
+        layer.backgroundColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor
         return layer
     }()
     
     private lazy var lineUnderOtherQuotationLayer: CALayer = {
         let layer = CALayer()
-        layer.backgroundColor = UIColor.white.cgColor
+        layer.backgroundColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor
         return layer
     }()
     
@@ -38,7 +38,8 @@ class HeaderView: UIView {
         self.currentQuotationLabel.translatesAutoresizingMaskIntoConstraints = false
         self.leaveFeedbackButton.translatesAutoresizingMaskIntoConstraints = false
         self.otherQuotationsLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        self.headerView.backgroundColor = .none
+        self.backgroundColor = .none
         self.configure()
         self.headerView.setNeedsUpdateConstraints()
     }

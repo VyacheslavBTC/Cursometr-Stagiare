@@ -10,11 +10,6 @@ import UIKit
 
 class VerticalResourcesTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var notificationImageFrom1Purchase: UIImageView!
-    @IBOutlet weak var purchaseLabel: UILabel!
-    @IBOutlet weak var priceOfPurchaseFrom1Label: UILabel!
-    @IBOutlet weak var from1Label: UILabel!
-    
     //Добавить все аутлеты?
     
     override func awakeFromNib() {

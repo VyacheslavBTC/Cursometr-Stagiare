@@ -12,13 +12,22 @@ class MainScreenViewController: UIViewController, UICollectionViewDataSource, UI
 
     @IBOutlet weak var horizontalQuotationsCollection: UICollectionView!
     
+    var colArray:[subscribedDataStruct] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        WorkWithServer.authorizationStart(onSuccess: {})
+        WorkWithServer.getSubscribedData() { (results:[subscribedDataStruct]) in
+            self.colArray = results
+            DispatchQueue.main.async {
+                self.horizontalQuotationsCollection.reloadData()
+            }
+        }
         horizontalQuotationsCollection.delegate = self
         horizontalQuotationsCollection.dataSource = self
         self.horizontalQuotationsCollection.isPagingEnabled = true
         self.horizontalQuotationsCollection.showsHorizontalScrollIndicator = false
+        //self.horizontalQuotationsCollection.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.85)
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,13 +36,16 @@ class MainScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
-        return 3
+        return colArray.count
     }
     
 
         // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ResourcesCollectionViewCell
+        cell.configure(dataStruct: colArray[indexPath.section])
+     
+        cell.backgroundColor = .none
         return cell
     }
     

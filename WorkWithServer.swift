@@ -22,17 +22,18 @@ struct Source{
     let sourceId:Int
     let sourceName: String
     let sourceRanges:[Ranges]
+   
     init(sourceId:Int, sourceName:String, sourceRanges:[Ranges]){
         self.sourceId = sourceId
         self.sourceName = sourceName
         self.sourceRanges = sourceRanges
+        
         //print(self)
     }
     
 }
 
 struct subscribedDataStruct{
-    
     let currencyId:Int
     let currencyName: String
     let currencyFullName: String
@@ -87,6 +88,7 @@ struct WorkWithServer {
             if let data = data{
                 do{
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]{
+                        //print(json)
                         if let subscriptionCategories = json["subscriptionCategories"] as? [[String:Any]]{
                             
                             for var subItem in subscriptionCategories{
@@ -107,15 +109,16 @@ struct WorkWithServer {
                                             for var rangesItem in rangesItemArray{
                                                 let sourceBuyPriceNow = rangesItem["buyPriceNow"] as? Double
                                                 let sourceSalePriceNow = rangesItem["salePriceNow"] as? Double
-                                                
                                                 rangesArray.append(Ranges.init(sourceBuyPriceNow: sourceBuyPriceNow!, sourceSalePriceNow: sourceSalePriceNow!))
+                                                
                                             }
-                                            
-                                        sourceDataArray.append(Source.init(sourceId: sourceId!, sourceName: sourceName!, sourceRanges:rangesArray))
+                                            sourceDataArray.append(Source.init(sourceId: sourceId!, sourceName: sourceName!, sourceRanges:rangesArray))
+                                            rangesArray = []
                                         }
                                     }
-                                    print("\n\n\n\n")
                                     dataArray.append(subscribedDataStruct.init(currencyId: subId!, currencyName: name!, currencyFullName: fullName!, arrayOfSources: sourceDataArray))
+
+                                    sourceDataArray = []
                                 }
                             }
                         }
@@ -190,12 +193,8 @@ static func authorizationStart(onSuccess:@escaping () -> ()) ->() {
             if let data = data{
                 do{
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]{
-                        print(json)
                         setCookies(response: response!)
-                        //getAllDataFromServer()
-                        getSubscribedData(){ (results:[subscribedDataStruct]) in
-                            print(results)
-                        }
+                        onSuccess()
                     }
                 }
                 catch{
@@ -205,5 +204,6 @@ static func authorizationStart(onSuccess:@escaping () -> ()) ->() {
             
         }
         task.resume()
+
     }
 }

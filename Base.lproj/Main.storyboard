@@ -13,7 +13,7 @@
         <scene sceneID="w6z-Te-9uO">
             <objects>
                 <navigationController id="4vN-Q0-snq" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="blackTranslucent" id="sdR-2C-R6s">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="sdR-2C-R6s">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -82,6 +82,7 @@
                                         </view>
                                         <color key="backgroundColor" red="0.18613245518877686" green="0.74072689238606593" blue="0.78292988989637302" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
+                                            <outlet property="HeaderOfCurrencyView" destination="42r-JR-y4V" id="sgZ-s6-01H"/>
                                             <outlet property="verticalTableView" destination="l6H-Tk-deV" id="jbD-1n-v5B"/>
                                         </connections>
                                     </collectionViewCell>

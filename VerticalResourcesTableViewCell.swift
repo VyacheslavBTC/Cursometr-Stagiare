@@ -19,9 +19,9 @@ class VerticalResourcesTableViewCell: UITableViewCell {
     var salePriceUnder:UILabel = UILabel()
     var notificationBuyImage: UIImage = UIImage()
     var notificationSaleImage: UIImage = UIImage()
-    var buyView: UIView = UIView()
-    var saleView:UIView = UIView()
-    
+    var saleImageView:UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+    var buyImageView:UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,6 +43,8 @@ class VerticalResourcesTableViewCell: UITableViewCell {
         self.addSubview(self.buyPriceUnder)
         self.addSubview(self.salePrice)
         self.addSubview(self.salePriceUnder)
+        self.addSubview(self.saleImageView)
+        self.addSubview(self.buyImageView)
         initializeElements()
     }
     
@@ -60,7 +62,7 @@ class VerticalResourcesTableViewCell: UITableViewCell {
         self.buyPrice.font = self.buyPrice.font.withSize(20)
         self.buyPrice.textColor = .white
         self.buyPrice.translatesAutoresizingMaskIntoConstraints = false
-        self.buyPrice.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -15).isActive = true
+        self.buyPrice.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -10).isActive = true
         self.buyPrice.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 87).isActive = true
         
         self.buyPriceUnder.frame  = CGRect(x: 0, y: 0, width: 54, height: 11)
@@ -68,36 +70,45 @@ class VerticalResourcesTableViewCell: UITableViewCell {
         self.buyPriceUnder.textColor = .white
         self.buyPriceUnder.font = self.buyPriceUnder.font.withSize(13)
         self.buyPriceUnder.translatesAutoresizingMaskIntoConstraints = false
-        self.buyPriceUnder.topAnchor.constraint(equalTo: self.buyPrice.bottomAnchor, constant: 4).isActive = true
+        self.buyPriceUnder.topAnchor.constraint(equalTo: self.buyPrice.bottomAnchor, constant: 5).isActive = true
         self.buyPriceUnder.leftAnchor.constraint(equalTo: self.buyPrice.leftAnchor, constant: 0).isActive = true
         
         self.salePrice.frame  = CGRect(x: 0, y: 0, width: 54, height: 18)
         self.salePrice.font = self.salePrice.font.withSize(20)
         self.salePrice.textColor = .white
         self.salePrice.translatesAutoresizingMaskIntoConstraints = false
-        self.salePrice.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -15).isActive = true
+        self.salePrice.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -10).isActive = true
         self.salePrice.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 220).isActive = true
+        
+        
+        self.saleImageView.image = UIImage(named: "icn_notification_green")
+        self.saleImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.saleImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        self.saleImageView.leftAnchor.constraint(equalTo: self.salePrice.rightAnchor, constant: 5).isActive = true
+
+        
+        self.buyImageView.image = UIImage(named: "icn_notification_green")
+        self.buyImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.buyImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        self.buyImageView.leftAnchor.constraint(equalTo: self.buyPrice.rightAnchor, constant: 5).isActive = true
         
         self.salePriceUnder.frame  = CGRect(x: 0, y: 0, width: 54, height: 11)
         self.salePriceUnder.text = "Sale"
         self.salePriceUnder.textColor = .white
         self.salePriceUnder.font = self.salePriceUnder.font.withSize(13)
         self.salePriceUnder.translatesAutoresizingMaskIntoConstraints = false
-        self.salePriceUnder.topAnchor.constraint(equalTo: self.salePrice.bottomAnchor, constant: 4).isActive = true
+        self.salePriceUnder.topAnchor.constraint(equalTo: self.salePrice.bottomAnchor, constant: 5).isActive = true
         self.salePriceUnder.leftAnchor.constraint(equalTo: self.salePrice.leftAnchor, constant: 0).isActive = true
-
-        
         
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     func configure(sourceData:Source, index: Int){
         self.sourceData = sourceData
+        
         self.buyPrice.text = String (sourceData.sourceRanges[index].sourceBuyPriceNow)
         self.salePrice.text = String (sourceData.sourceRanges[index].sourceSalePriceNow)
-        //print(sourceData,"\n\n")
+        
     }
 }

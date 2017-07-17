@@ -61,11 +61,6 @@ class HeaderView: UIView {
         
         self.lineUnderOtherQuotationLayer.frame = CGRect(x: 16, y: self.headerView.frame.height - 16, width: self.headerView.frame.width - 32, height: 1)
 
-        
-       // self.currentQuotationUnderLineView.centerYAnchor.constraint(equalTo: self.headerView.topAnchor, constant: 60).isActive = true
-       // self.currentQuotationUnderLineView.leftAnchor.constraint(equalTo: self.headerView.leftAnchor, constant: 16).isActive = true
-       // self.currentQuotationUnderLineView.rightAnchor.constraint(equalTo: self.headerView.rightAnchor, constant: -16).isActive = true
-       // self.currentQuotationUnderLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         super.updateConstraints()
         }
     

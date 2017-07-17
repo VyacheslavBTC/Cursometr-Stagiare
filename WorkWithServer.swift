@@ -48,12 +48,7 @@ struct subscribedDataStruct{
 }
 
 struct WorkWithServer {
-    
-   
-    //    let avatarUrl:String
-    //    let description:String
-    //    let name:String
-    //    let urlRep: String
+
     static let authorizationRequestPath = "http://currency.btc-solutions.ru:8080/Api/Account"
     static let currencyListPath = "http://currency.btc-solutions.ru:8080/api/CurrencyList"
     static let subsribedCurrencyList = "http://currency.btc-solutions.ru:8080/api/CurrencySubscription?Lang=0"
@@ -63,13 +58,6 @@ struct WorkWithServer {
         case invalid(String,Any)
     }
     
-    //    init(avatarUrl:String, name:String, description: String, ava:UIImage, urlRep: String ) throws{
-    //        self.avatarUrl = avatarUrl
-    //        self.description = description
-    //        self.name = name
-    //        self.ava = ava
-    //        self.urlRep = urlRep
-    //    }
     
     static func getSubscribedData(OnSuccess: @escaping ([subscribedDataStruct]) -> ()) -> (){
         

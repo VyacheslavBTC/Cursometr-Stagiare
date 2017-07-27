@@ -10,7 +10,7 @@ import UIKit
 
 class SourcesTableViewController: UITableViewController {
 
-   public var sources:[Source2] = []
+   public var sources:[sourceCommonData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()

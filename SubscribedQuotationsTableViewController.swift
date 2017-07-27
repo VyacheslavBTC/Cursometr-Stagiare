@@ -10,7 +10,7 @@ import UIKit
 
 class SubscribedQuotationsTableViewController: UITableViewController {
     
-    public var currencies: [CurrencyWithSources] = []
+    public var currencies: [allCurrenciesWithSources] = []
     var index = 0
     
     override func viewDidLoad() {
@@ -50,7 +50,7 @@ class SubscribedQuotationsTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! SourcesTableViewController
-        destinationVC.sources = currencies[index].arrayOfSources
+        destinationVC.sources = currencies[index].sources
     }
 
     /*

@@ -10,7 +10,7 @@ import UIKit
 
 class VerticalResourcesTableViewCell: UITableViewCell {
     
-    var sourceData:Source?
+    var sourceData:SourceSubscribedData?
     
     var rangeLabel:UILabel = UILabel()
     var buyPrice:UILabel = UILabel()
@@ -101,14 +101,12 @@ class VerticalResourcesTableViewCell: UITableViewCell {
         self.salePriceUnder.leftAnchor.constraint(equalTo: self.salePrice.leftAnchor, constant: 0).isActive = true
         
     }
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    func configure(sourceData:Source, index: Int){
+    
+    
+    func configure(sourceData:SourceSubscribedData, index: Int){
         self.sourceData = sourceData
-        
-        self.buyPrice.text = String (sourceData.sourceRanges[index].sourceBuyPriceNow)
-        self.salePrice.text = String (sourceData.sourceRanges[index].sourceSalePriceNow)
+        self.buyPrice.text = String (sourceData.ranges[index].sourceBuyPriceNow)
+        self.salePrice.text = String (sourceData.ranges[index].sourceSalePriceNow)
         
     }
 }

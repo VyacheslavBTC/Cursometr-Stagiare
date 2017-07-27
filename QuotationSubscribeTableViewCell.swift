@@ -10,7 +10,7 @@ import UIKit
 
 class QuotationSubscribeTableViewCell: UITableViewCell {
 
-    var currency:CurrencyWithSources! = nil
+    var currency:allCurrenciesWithSources! = nil
     
     @IBOutlet weak var sourcesLabel: UILabel!
     @IBOutlet weak var checkImage: UIImageView!
@@ -41,17 +41,17 @@ class QuotationSubscribeTableViewCell: UITableViewCell {
         self.backgroundColor = .none
     }
     
-    func configure(currency: CurrencyWithSources){
+    func configure(currency: allCurrenciesWithSources){
         self.sourcesLabel.text = ""
         self.currency = currency
-        self.currencyNameLabel.text = currency.currencyName
+        self.currencyNameLabel.text = currency.name
         if self.currency.enable == false{
             self.checkImage.isHidden = true
         }
         else{
-            for var source in currency.arrayOfSources{
+            for var source in currency.sources{
                     if source.subscribed == true{
-                        self.sourcesLabel.text! = self.sourcesLabel.text! + source.sourceName + ","
+                        self.sourcesLabel.text! = self.sourcesLabel.text! + source.name + ","
                     }
                 
                 }

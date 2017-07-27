@@ -9,75 +9,75 @@
 import Foundation
 
 struct Ranges{
-    let sourceBuyPriceNow:Double
-    let sourceSalePriceNow:Double
+    let sourceBuyPriceNow: Double
+    let sourceSalePriceNow: Double
     
-    init(sourceBuyPriceNow: Double, sourceSalePriceNow:Double){
+    init(sourceBuyPriceNow: Double, sourceSalePriceNow: Double){
         self.sourceSalePriceNow = sourceSalePriceNow
         self.sourceBuyPriceNow = sourceBuyPriceNow
     }
 }
 
-struct Source{
-    let sourceId:Int
-    let sourceName: String
-    let sourceRanges:[Ranges]
+struct SourceSubscribedData{
+    let id: Int
+    let name: String
+    let ranges: [Ranges]
    
-    init(sourceId:Int, sourceName:String, sourceRanges:[Ranges]){
-        self.sourceId = sourceId
-        self.sourceName = sourceName
-        self.sourceRanges = sourceRanges
+    init(id: Int, name: String, ranges: [Ranges]){
+        self.id = id
+        self.name = name
+        self.ranges = ranges
 
     }
     
 }
-struct Source2{
-    let sourceId:Int
-    let sourceName: String
+struct sourceCommonData{
+    let id :Int
+    let name: String
     let subscribed: Bool
     let geoId: String?
     let locationName: String?
     
-    init(sourceId: Int, sourceName: String, subscribed: Bool, geoId:String? = nil, locationName:String? = nil){
-        self.sourceId = sourceId
-        self.sourceName = sourceName
+    init(id: Int, name: String, subscribed: Bool, geoId:String? = nil, locationName:String? = nil){
+        self.id = id
+        self.name = name
         self.subscribed = subscribed
         self.geoId = geoId
         self.locationName = locationName
     }
 }
 
-struct CurrencyWithSources{
-    let currencyId:Int
-    let currencyName: String
-    let currencyFullName: String
+struct allCurrenciesWithSources{
+    let id: Int
+    let name: String
+    let fullName: String
     let enable: Bool
-    let arrayOfSources: [Source2]
+    let sources: [sourceCommonData]
     
-    init(currencyId:Int, currencyName:String, currencyFullName: String, arrayOfSources: [Source2], enable: Bool){
-        self.currencyId = currencyId
-        self.currencyName = currencyName
-        self.currencyFullName = currencyFullName
-        self.arrayOfSources = arrayOfSources
+    init(id:Int, name:String, fullName: String, sources: [sourceCommonData], enable: Bool){
+        self.id = id
+        self.name = name
+        self.fullName = fullName
         self.enable = enable
+        self.sources = sources
     }
 }
 
 struct subscribedDataStruct{
-    let currencyId:Int
-    let currencyName: String
-    let currencyFullName: String
-    let arrayOfSources: [Source]
+    let id: Int
+    let name: String
+    let fullName: String
+    let sources: [SourceSubscribedData]
     
-    init(currencyId:Int, currencyName:String, currencyFullName: String, arrayOfSources: [Source]){
-        self.currencyId = currencyId
-        self.currencyName = currencyName
-        self.currencyFullName = currencyFullName
-        self.arrayOfSources = arrayOfSources
+    init(id: Int, name: String, fullName: String, sources: [SourceSubscribedData]){
+        self.id = id
+        self.name = name
+        self.fullName = fullName
+        self.sources = sources
     }
 }
 
-struct WorkWithServer {
+public class ServerRequest {
 
     static let authorizationRequestPath = "http://currency.btc-solutions.ru:8080/Api/Account"
     static let currencyListPath = "http://currency.btc-solutions.ru:8080/api/CurrencyList"
@@ -90,7 +90,7 @@ struct WorkWithServer {
     }
     
     
-    static func getSubscribedData(OnSuccess: @escaping ([subscribedDataStruct]) -> ()) -> (){
+    static func obtainSubscribedData(OnSuccess: @escaping ([subscribedDataStruct]) -> ()) -> (){
         
         let url = subsribedCurrencyList
         
@@ -98,11 +98,11 @@ struct WorkWithServer {
         let cookieHeaderField = ["Set-Cookie": "key=value"]
         let cookies = HTTPCookie.cookies(withResponseHeaderFields: cookieHeaderField, for: URL(string:url)!)
         jar.setCookies(cookies, for: URL(string:url)!, mainDocumentURL: URL(string:url)!)
-        var dataArray:[subscribedDataStruct] = []
+        var subscribedData:[subscribedDataStruct] = []
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
-        var sourceDataArray:[Source] = []
-        var rangesArray:[Ranges] = []
+        var sourceData:[SourceSubscribedData] = []
+        var ranges:[Ranges] = []
         let task = URLSession.shared.dataTask(with: request){(data:Data?, response:URLResponse?, error:Error?) in
             if let data = data{
                 do{
@@ -126,16 +126,16 @@ struct WorkWithServer {
                                             for var rangesItem in rangesItemArray{
                                                 let sourceBuyPriceNow = rangesItem["buyPriceNow"] as? Double
                                                 let sourceSalePriceNow = rangesItem["salePriceNow"] as? Double
-                                                rangesArray.append(Ranges.init(sourceBuyPriceNow: sourceBuyPriceNow!, sourceSalePriceNow: sourceSalePriceNow!))
+                                                ranges.append(Ranges.init(sourceBuyPriceNow: sourceBuyPriceNow!, sourceSalePriceNow: sourceSalePriceNow!))
                                                 
                                             }
-                                            sourceDataArray.append(Source.init(sourceId: sourceId!, sourceName: sourceName!, sourceRanges:rangesArray))
-                                            rangesArray = []
+                                            sourceData.append(SourceSubscribedData.init(id: sourceId!, name: sourceName!, ranges:ranges))
+                                            ranges = []
                                         }
                                     }
-                                    dataArray.append(subscribedDataStruct.init(currencyId: subId!, currencyName: name!, currencyFullName: fullName!, arrayOfSources: sourceDataArray))
+                                    subscribedData.append(subscribedDataStruct.init(id: subId!, name: name!, fullName: fullName!, sources: sourceData))
 
-                                    sourceDataArray = []
+                                    sourceData = []
                                 }
                             }
                         }
@@ -145,7 +145,7 @@ struct WorkWithServer {
                 catch{
                     print(error.localizedDescription)
                 }
-                OnSuccess(dataArray)
+                OnSuccess(subscribedData)
             }
             
         }
@@ -164,12 +164,12 @@ struct WorkWithServer {
         }
     }
   
-static func getAllDataFromServer(OnSuccess: @escaping ([CurrencyWithSources]) -> ()) -> (){
+static func obtainAllDataFromServer(OnSuccess: @escaping ([allCurrenciesWithSources]) -> ()) -> (){
     let url = currencyListPath
     let parameters =  ["geoFilter": ["geoIds": []],"lang": 0] as [String : Any]
     let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
-    var sourcesList:[Source2] = []
-    var currencyWithSources:[CurrencyWithSources] = []
+    var sourcesList:[sourceCommonData] = []
+    var currencyWithSources:[allCurrenciesWithSources] = []
     let jar = HTTPCookieStorage.shared
     let cookieHeaderField = ["Set-Cookie": "key=value"]
     let cookies = HTTPCookie.cookies(withResponseHeaderFields: cookieHeaderField, for: URL(string:url)!)
@@ -203,11 +203,11 @@ static func getAllDataFromServer(OnSuccess: @escaping ([CurrencyWithSources]) ->
                             let geoId = source["geoId"] as? String
                             let locationName = source["locationName"] as? String
                                 
-                            sourcesList.append(Source2.init(sourceId: sourceId!, sourceName: name!, subscribed: subscribed!, geoId:geoId, locationName:locationName))
+                            sourcesList.append(sourceCommonData.init(id: sourceId!, name: name!, subscribed: subscribed!, geoId:geoId, locationName:locationName))
                                 }
                             
                             }
-                            currencyWithSources.append(CurrencyWithSources.init(currencyId: id!, currencyName: name!, currencyFullName: fullName!, arrayOfSources: sourcesList, enable: enable!))
+                            currencyWithSources.append(allCurrenciesWithSources.init(id: id!, name: name!, fullName: fullName!, sources: sourcesList, enable: enable!))
                             sourcesList = []
                         }
                     }

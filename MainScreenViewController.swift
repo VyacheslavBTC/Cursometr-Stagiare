@@ -13,10 +13,10 @@ class MainScreenViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet weak var horizontalQuotationsCollection: UICollectionView!
     
     var colArray:[subscribedDataStruct] = []
-    var allCurrenciesWithSources:[CurrencyWithSources] = []
+    var allCurrenciesWithSources:[allCurrenciesWithSources] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        WorkWithServer.authorizationStart(onSuccess: { self.tableData()})
+        ServerRequest.authorizationStart(onSuccess: { self.setDataInViews()})
         self.horizontalQuotationsCollection.delegate = self
         self.horizontalQuotationsCollection.dataSource = self
         self.horizontalQuotationsCollection.isPagingEnabled = true
@@ -42,14 +42,14 @@ class MainScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func configure(){
     }
     
-    func tableData(){
-        WorkWithServer.getSubscribedData() { (results:[subscribedDataStruct]) in
+    func setDataInViews(){
+        ServerRequest.obtainSubscribedData() { (results:[subscribedDataStruct]) in
             self.colArray = results
             print(results)
         DispatchQueue.main.async {
                 self.horizontalQuotationsCollection.reloadData()
             }
-        WorkWithServer.getAllDataFromServer(OnSuccess: { ( results:[CurrencyWithSources]) in
+        ServerRequest.obtainAllDataFromServer(OnSuccess: { ( results:[allCurrenciesWithSources]) in
             self.allCurrenciesWithSources = results
             print(results)
                 DispatchQueue.main.async {
@@ -73,13 +73,12 @@ class MainScreenViewController: UIViewController, UICollectionViewDataSource, UI
         cell.configure(dataStruct: colArray[indexPath.item])
         cell.headerOfCurrencyView.delegateFeedback = self
         cell.headerOfCurrencyView.delegateQuotationsList = self
-        cell.backgroundColor = .none
+
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-        return size
+        return collectionView.frame.size
     }
 
 }

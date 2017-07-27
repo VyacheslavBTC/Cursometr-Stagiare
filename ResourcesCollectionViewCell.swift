@@ -14,33 +14,24 @@ class ResourcesCollectionViewCell: UICollectionViewCell, UITableViewDataSource, 
     @IBOutlet weak var headerOfCurrencyView: HeaderView!
 
     
-    var dataStruct:subscribedDataStruct?
+    var dataStruct: subscribedDataStruct!
     
     
     @IBOutlet weak var verticalTableView: UITableView!
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return (self.dataStruct?.arrayOfSources[section].sourceRanges.count)!
+        return (self.dataStruct.sources[section].ranges.count)
     }
     
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let vw = UIView()
-        vw.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 34)
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: vw.frame.width, height: 30))
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = dataStruct?.arrayOfSources[section].sourceName
-        label.textColor = .white
-        label.font = label.font.withSize(22)
-        vw.addSubview(label)
-        label.topAnchor.constraint(equalTo: vw.topAnchor, constant: -5).isActive = true
-        label.leftAnchor.constraint(equalTo: vw.leftAnchor, constant: 0).isActive = true
-        vw.backgroundColor = .none
+        let vw = HeaderLabelView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 34))
+        vw.configure(labelText: (dataStruct.sources[section].name))
         return vw
     }
    
     public func numberOfSections(in tableView: UITableView) -> Int{
-        return (dataStruct?.arrayOfSources.count)!
+        return (dataStruct.sources.count)
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
@@ -56,7 +47,7 @@ class ResourcesCollectionViewCell: UICollectionViewCell, UITableViewDataSource, 
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "verticalCell") as? VerticalResourcesTableViewCell
-        cell?.configure(sourceData: (dataStruct?.arrayOfSources[indexPath.section])!, index: indexPath.item)
+        cell?.configure(sourceData: (dataStruct?.sources[indexPath.section])!, index: indexPath.item)
         return cell!
     }
     
@@ -76,13 +67,13 @@ class ResourcesCollectionViewCell: UICollectionViewCell, UITableViewDataSource, 
         self.verticalTableView.dataSource  = self
         self.verticalTableView.backgroundColor = .none
         self.verticalTableView.showsVerticalScrollIndicator = false
-
+        self.backgroundColor = .none
         
     }
     
     func configure(dataStruct: subscribedDataStruct){
         self.dataStruct = dataStruct
-        headerOfCurrencyView.currentQuotationLabel.text = dataStruct.currencyName
+        headerOfCurrencyView.currentQuotationLabel.text = dataStruct.name
     }
    
 }

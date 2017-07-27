@@ -29,8 +29,8 @@ class SourceTableViewCell: UITableViewCell {
         self.backgroundColor = .none
         self.sourceSwitcher.onTintColor = UIColor.init(red: 90/255, green: 200/255, blue: 250/255, alpha: 1)
     }
-    func configure(source: Source2){
-        self.sourceName.text = source.sourceName
+    func configure(source: sourceCommonData){
+        self.sourceName.text = source.name
         if source.subscribed == false{
             self.sourceSwitcher.isOn = false
         }

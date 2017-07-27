@@ -10,14 +10,19 @@ import UIKit
 
 class ResourcesCollectionViewCell: UICollectionViewCell, UITableViewDataSource, UITableViewDelegate{
     
+    
     @IBOutlet weak var headerOfCurrencyView: HeaderView!
+
+    
     var dataStruct:subscribedDataStruct?
+    
     
     @IBOutlet weak var verticalTableView: UITableView!
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return (self.dataStruct?.arrayOfSources[section].sourceRanges.count)!
     }
+    
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let vw = UIView()
@@ -48,10 +53,9 @@ class ResourcesCollectionViewCell: UICollectionViewCell, UITableViewDataSource, 
         return 10
     }
     
-  
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "verticalCell") as? VerticalResourcesTableViewCell
-        
         cell?.configure(sourceData: (dataStruct?.arrayOfSources[indexPath.section])!, index: indexPath.item)
         return cell!
     }
@@ -64,7 +68,7 @@ class ResourcesCollectionViewCell: UICollectionViewCell, UITableViewDataSource, 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-   
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -72,6 +76,8 @@ class ResourcesCollectionViewCell: UICollectionViewCell, UITableViewDataSource, 
         self.verticalTableView.dataSource  = self
         self.verticalTableView.backgroundColor = .none
         self.verticalTableView.showsVerticalScrollIndicator = false
+
+        
     }
     
     func configure(dataStruct: subscribedDataStruct){

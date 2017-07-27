@@ -27,10 +27,40 @@ struct Source{
         self.sourceId = sourceId
         self.sourceName = sourceName
         self.sourceRanges = sourceRanges
-        
-        //print(self)
+
     }
     
+}
+struct Source2{
+    let sourceId:Int
+    let sourceName: String
+    let subscribed: Bool
+    let geoId: String?
+    let locationName: String?
+    
+    init(sourceId: Int, sourceName: String, subscribed: Bool, geoId:String? = nil, locationName:String? = nil){
+        self.sourceId = sourceId
+        self.sourceName = sourceName
+        self.subscribed = subscribed
+        self.geoId = geoId
+        self.locationName = locationName
+    }
+}
+
+struct CurrencyWithSources{
+    let currencyId:Int
+    let currencyName: String
+    let currencyFullName: String
+    let enable: Bool
+    let arrayOfSources: [Source2]
+    
+    init(currencyId:Int, currencyName:String, currencyFullName: String, arrayOfSources: [Source2], enable: Bool){
+        self.currencyId = currencyId
+        self.currencyName = currencyName
+        self.currencyFullName = currencyFullName
+        self.arrayOfSources = arrayOfSources
+        self.enable = enable
+    }
 }
 
 struct subscribedDataStruct{
@@ -52,6 +82,7 @@ struct WorkWithServer {
     static let authorizationRequestPath = "http://currency.btc-solutions.ru:8080/Api/Account"
     static let currencyListPath = "http://currency.btc-solutions.ru:8080/api/CurrencyList"
     static let subsribedCurrencyList = "http://currency.btc-solutions.ru:8080/api/CurrencySubscription?Lang=0"
+    
     
     enum SerializationError:Error{
         case missing(String)
@@ -76,7 +107,6 @@ struct WorkWithServer {
             if let data = data{
                 do{
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]{
-                        //print(json)
                         if let subscriptionCategories = json["subscriptionCategories"] as? [[String:Any]]{
                             
                             for var subItem in subscriptionCategories{
@@ -93,7 +123,6 @@ struct WorkWithServer {
                                         
 
                                         if let rangesItemArray = sourceItem["ranges"] as? [[String:Any]]{
-                                            
                                             for var rangesItem in rangesItemArray{
                                                 let sourceBuyPriceNow = rangesItem["buyPriceNow"] as? Double
                                                 let sourceSalePriceNow = rangesItem["salePriceNow"] as? Double
@@ -135,12 +164,12 @@ struct WorkWithServer {
         }
     }
   
-static func getAllDataFromServer(){
+static func getAllDataFromServer(OnSuccess: @escaping ([CurrencyWithSources]) -> ()) -> (){
     let url = currencyListPath
     let parameters =  ["geoFilter": ["geoIds": []],"lang": 0] as [String : Any]
     let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
-
-    
+    var sourcesList:[Source2] = []
+    var currencyWithSources:[CurrencyWithSources] = []
     let jar = HTTPCookieStorage.shared
     let cookieHeaderField = ["Set-Cookie": "key=value"]
     let cookies = HTTPCookie.cookies(withResponseHeaderFields: cookieHeaderField, for: URL(string:url)!)
@@ -155,12 +184,39 @@ static func getAllDataFromServer(){
         if let data = data{
             do{
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]{
-                    print(json)
+                    if let currencies = json["currencies"] as? [[String: Any]]{
+                        
+                        for var currency in currencies{
+                            
+                        let id  = currency["id"] as? Int
+                        let name = currency["name"] as? String
+                        let fullName = currency["fullName"] as? String
+                        let enable = currency["enable"] as? Bool
+                            
+                        if let sources = currency["sources"] as? [[String: Any]]{
+                            
+                            for var source in sources{
+                                
+                            let sourceId = source["id"] as? Int
+                            let name = source["name"] as? String
+                            let subscribed = source["subscribed"] as? Bool
+                            let geoId = source["geoId"] as? String
+                            let locationName = source["locationName"] as? String
+                                
+                            sourcesList.append(Source2.init(sourceId: sourceId!, sourceName: name!, subscribed: subscribed!, geoId:geoId, locationName:locationName))
+                                }
+                            
+                            }
+                            currencyWithSources.append(CurrencyWithSources.init(currencyId: id!, currencyName: name!, currencyFullName: fullName!, arrayOfSources: sourcesList, enable: enable!))
+                            sourcesList = []
+                        }
+                    }
                 }
             }
             catch{
                 print(error.localizedDescription)
             }
+            OnSuccess(currencyWithSources)
         }
         
     }
@@ -182,6 +238,7 @@ static func authorizationStart(onSuccess:@escaping () -> ()) ->() {
                 do{
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]{
                         setCookies(response: response!)
+                        print("asd")
                         onSuccess()
                     }
                 }

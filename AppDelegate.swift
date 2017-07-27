@@ -13,13 +13,20 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        //UINavigationBar.appearance().barTintColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.06)
-        // Override point for customization after application launch.
+        
+        UINavigationBar.appearance().barTintColor = UIColor(red: 36/255, green: 37/255, blue: 43/255, alpha: 1)
+        UINavigationBar.appearance().tintColor = UIColor.init(red: 90/255, green: 200/255, blue: 250/255, alpha: 1)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        
+        UIApplication.shared.statusBarStyle = .lightContent
         return true
     }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

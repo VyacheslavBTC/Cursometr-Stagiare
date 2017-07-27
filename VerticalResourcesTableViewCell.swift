@@ -83,14 +83,14 @@ class VerticalResourcesTableViewCell: UITableViewCell {
         
         self.saleImageView.image = UIImage(named: "icn_notification_green")
         self.saleImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.saleImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
-        self.saleImageView.leftAnchor.constraint(equalTo: self.salePrice.rightAnchor, constant: 5).isActive = true
+        self.saleImageView.centerYAnchor.constraint(equalTo: self.salePrice.centerYAnchor, constant: 0).isActive = true
+        self.saleImageView.leftAnchor.constraint(equalTo: self.salePrice.rightAnchor, constant: 8).isActive = true
 
         
         self.buyImageView.image = UIImage(named: "icn_notification_green")
         self.buyImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.buyImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
-        self.buyImageView.leftAnchor.constraint(equalTo: self.buyPrice.rightAnchor, constant: 5).isActive = true
+        self.buyImageView.centerYAnchor.constraint(equalTo: self.buyPrice.centerYAnchor, constant: 0).isActive = true
+        self.buyImageView.leftAnchor.constraint(equalTo: self.buyPrice.rightAnchor, constant: 8).isActive = true
         
         self.salePriceUnder.frame  = CGRect(x: 0, y: 0, width: 54, height: 11)
         self.salePriceUnder.text = "Sale"
